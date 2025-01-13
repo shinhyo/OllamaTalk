@@ -1,0 +1,40 @@
+name: wallpaper
+description: "A new Flutter project."
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.6.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_bloc: ^8.1.6
+
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+
+  get_it: ^8.0.3
+  go_router: ^14.6.2
+
+  google_fonts: ^6.2.1
+  cupertino_icons: ^1.0.8
+  flutter_markdown: ^0.7.5
+
+  talker_flutter: ^4.6.0
+  talker_bloc_logger: ^4.6.0
+
+  dio: ^5.7.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+  build_runner: ^2.4.14
+  go_router_builder: ^2.7.1
+
+flutter:
+  uses-material-design: true
