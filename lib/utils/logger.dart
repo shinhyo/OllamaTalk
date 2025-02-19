@@ -15,10 +15,8 @@ class Logger {
 
   Logger._internal()
       : _talker = Talker(
-            settings: TalkerSettings(
-          useConsoleLogs: true,
-          enabled: true,
-        ));
+          settings: TalkerSettings(),
+        );
 
   factory Logger() => _instance;
 

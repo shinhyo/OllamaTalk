@@ -1,0 +1,41 @@
+{
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleteTitle": "Confirm Delete",
+    "deleteContent": "Are you sure you want to delete?"
+  },
+  "home": {
+    "know": "What do you want to know?",
+    "ask": "Ask anything...",
+    "unavailable": "Ollama service is unavailable. Please go to Settings and verify the service status",
+    "loading": "Loading...",
+    "promptTitle": "System Prompt Settings",
+    "promptHint": "Enter your default prompt here...",
+    "promptHelper": "This system prompt defines AI assistant's behavior and personality for all conversations",
+    "backExit": "Press back again to exit the app."
+  },
+  "chat": {
+    "hintText": "Enter the message."
+  },
+  "history": {
+    "emptyTitle": "No chat history available."
+  },
+  "settings": {
+    "invalidUrl": "Invalid URL",
+    "noModels": "No installed Ollama models. Run \"ollama pull [model]\" to install.",
+    "connectionFailed": "Connection failed. Please check Ollama server address.",
+    "screenTitle": "Setting",
+    "headerOllama": "Ollama",
+    "headerApp": "App",
+    "serverUrlLabel": "Server URL",
+    "serverUrlHint": "Enter Ollama server URL",
+    "connectionStatusLabel": "Connection Status",
+    "connectionStatusConnected": "Connected",
+    "connectionStatusUnavailable": "Unavailable",
+    "themeLabel": "Theme",
+    "themeDialogTitle": "Select Theme",
+    "versionLabel": "Version"
+  }
+}

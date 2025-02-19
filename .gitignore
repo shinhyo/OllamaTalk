@@ -88,5 +88,5 @@ desktop.ini
 # Temporary files
 *.tmp
 
-# Log files
-*.log
+/coverage/html/*
+/android/app/.cxx/*

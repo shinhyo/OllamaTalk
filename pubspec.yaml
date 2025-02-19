@@ -1,7 +1,7 @@
-name: wallpaper
+name: ollama_talk
 description: "A new Flutter project."
 
-version: 1.0.0+1
+version: 0.1.0+1
 
 environment:
   sdk: '>=3.6.0 <4.0.0'
@@ -9,32 +9,117 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
-  flutter_bloc: ^8.1.6
+  # State Management & Reactive Programming
+  flutter_bloc: ^9.0.0
+  rxdart: ^0.28.0
 
+  # Logging & Debugging
+  talker_flutter: ^4.6.11
+  talker_dio_logger: ^4.6.11
+  talker_bloc_logger: ^4.6.11
+
+  # Code Generation & Serialization
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
 
+  # Dependency Injection & Routing
   get_it: ^8.0.3
-  go_router: ^14.6.2
+  go_router: ^14.8.0
 
+  # UI Components & Styling
+  cached_network_image: ^3.4.1
   google_fonts: ^6.2.1
-  cupertino_icons: ^1.0.8
-  flutter_markdown: ^0.7.5
+  flutter_svg: ^2.0.17
+  markdown_widget: ^2.3.2+6
+  url_launcher: ^6.3.1
+  window_manager: ^0.4.3
+  bot_toast: ^4.1.3
 
-  talker_flutter: ^4.6.0
-  talker_bloc_logger: ^4.6.0
+  # Storage & Persistence
+  shared_preferences: ^2.5.2
 
-  dio: ^5.7.0
+  # Database
+  drift: ^2.25.0
+  drift_flutter: ^0.2.4
+
+  # Networking
+  dio: ^5.8.0+1
+
+  # Utilities
+  intl: ^0.20.2
+  universal_platform: ^1.1.0
+  path_provider: ^2.1.5
+  path: ^1.9.0
+  package_info_plus: ^8.2.1
+  device_preview: ^1.2.0
+  visibility_detector: ^0.4.0+2
+  #  flutter_native_splash: ^2.4.4
+
+  # i18n
+  slang: ^4.4.1
+  slang_flutter: ^4.4.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  # Linting & Analysis
   flutter_lints: ^5.0.0
 
+  # Code Generation Tools
   build_runner: ^2.4.14
-  go_router_builder: ^2.7.1
+  freezed: ^2.5.8
+  go_router_builder: ^2.7.5
+  json_serializable: ^6.9.3
+  drift_dev: ^2.25.0
+  mockito: ^5.4.5
+  slang_build_runner: ^4.4.1
+#  flutter_launcher_icons: ^0.14.3
+
+dependency_overrides:
+  intl: ^0.20.2
+#  async: ^2.12.0
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/
+    - assets/icons/
+    - assets/images/
+
+#flutter_launcher_icons:
+#  android: "launcher_icon"
+#  ios: true
+#  image_path: "assets/icon/icon.png"
+#  min_sdk_android: 21 # android min sdk min:16, default 21
+#  web:
+#    generate: true
+#    image_path: "path/to/image.png"
+#    background_color: "#hexcode"
+#    theme_color: "#hexcode"
+#  windows:
+#    generate: true
+#    image_path: "path/to/image.png"
+#    icon_size: 48 # min:48, max:256, default: 48
+#  macos:
+#    generate: true
+#    image_path: "path/to/image.png"
+
+#flutter_native_splash:
+#  color: "#ffffff"
+#  image: assets/images/app_icon_light.png
+#  #  branding: assets/branding-development.png
+##  color_dark: "#1e272d"
+##  image_dark: assets/images/app_icon_dark.png
+#  #  branding_dark: assets/branding-development.png
+#
+#  android_12:
+#    image: assets/images/app_icon_light.png
+#    icon_background_color: "#ffffff"
+#    image_dark: assets/images/app_icon_dark.png
+#    icon_background_color_dark: "#1e272d"
+#
+#  web: false
