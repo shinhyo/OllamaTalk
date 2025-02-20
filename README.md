@@ -9,7 +9,10 @@ secure and private chat experience without relying on external servers or cloud 
 design guarantees complete control over your data while delivering a unified experience across all
 major platforms.
 
-## Screenshot
+<p align="center">
+  <img src="/.github/art/0.gif" width="49%">
+  <img src="/.github/art/1.gif" width="49%">
+</p>
 
 <p align="center">
   <img src="https://github.com/shinhyo/OllamaTalk/blob/develop/.github/art/screenshot.png?raw=true" width="90%">
