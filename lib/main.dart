@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:device_preview/device_preview.dart';
@@ -41,19 +42,19 @@ Future<void> setupGlobalSettings() async {
 }
 
 Future<void> _initWindowOption() async {
-  if (!PlatformUtils.isDesktop) {
-    return;
-  }
+  if (!PlatformUtils.isDesktop) return;
+
   await windowManager.ensureInitialized();
   unawaited(
     windowManager.waitUntilReadyToShow(
-      const WindowOptions(
-        size: Size(1024, 768),
-        minimumSize: Size(420, 400),
-        titleBarStyle: TitleBarStyle.hidden,
+      WindowOptions(
+        size: const Size(1024, 768),
+        minimumSize: const Size(420, 400),
+        titleBarStyle:
+            Platform.isWindows ? TitleBarStyle.normal : TitleBarStyle.hidden,
         backgroundColor: Colors.transparent,
         windowButtonVisibility: true,
-        title: 'Talker',
+        title: t.common.appName,
       ),
       () async {
         await windowManager.show();

@@ -1,5 +1,6 @@
 {
   "common": {
+    "appName": "OllamaTalk",
     "ok": "OK",
     "cancel": "Cancel",
     "delete": "Delete",
