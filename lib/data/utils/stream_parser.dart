@@ -2,10 +2,8 @@ import 'dart:convert';
 
 import '../../utils/logger.dart';
 
-Stream<T> parseJsonStream<T>(
-  Stream<List<int>> inputStream,
-  T Function(Map<String, dynamic>) fromJson,
-) async* {
+Stream<T> parseJsonStream<T>(Stream<List<int>> inputStream,
+    T Function(Map<String, dynamic>) fromJson,) async* {
   final buffer = StringBuffer();
   const decoder = Utf8Decoder();
   bool isJsonStarted = false;
