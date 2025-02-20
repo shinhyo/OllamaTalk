@@ -12,7 +12,7 @@ class PlatformUtils {
           Platform.isMacOS ||
           Platform.isFuchsia);
 
-  static bool get isMobile => Platform.isAndroid || Platform.isIOS;
+  static bool get isMobile => !kIsWeb && (Platform.isAndroid || Platform.isIOS);
 
   static bool get isWeb => kIsWeb;
 }
