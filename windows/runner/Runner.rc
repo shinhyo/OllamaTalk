@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "io.github.shinhyo.ollama.talk" "\0"
-            VALUE "FileDescription", "ollama_talk" "\0"
+VALUE "FileDescription", "OllamaTalk" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "ollama_talk" "\0"
+VALUE "InternalName", "OllamaTalk" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 io.github.shinhyo.ollama.talk. All rights reserved." "\0"
-            VALUE "OriginalFilename", "ollama_talk.exe" "\0"
-            VALUE "ProductName", "ollama_talk" "\0"
+VALUE "OriginalFilename", "OllamaTalk.exe" "\0"
+VALUE "ProductName", "OllamaTalk" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
