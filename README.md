@@ -39,6 +39,14 @@ major platforms.
   the [Ollama Model Hub](https://ollama.com/search).  
   Examples: deepseek-r1, llama, mistral, qwen, gemma2, llava, and more.
 
+  - select the model you want to download and select the parameters value according to your system specifications. 
+
+  - Copy the bash command from the ollama model hub and run it on your terminal to download the model to your local system.
+  - for example :
+    ```bash
+    ollama run deepseek-r1:14b
+    ```
+
 ### Step 3: Start Ollama Server
 
 #### Default Local Setup
@@ -46,6 +54,18 @@ major platforms.
 ```bash
 ollama serve  # Defaults to http://localhost:11434
 ```
+
+#### Verify Ollama is running or not 
+navigate to `http://localhost:11434` and check whether the ollama is running or not.
+
+#### In Case Of:
+If your system shows error like this : 
+
+```bash
+Error: listen tcp 127.0.0.1:11434: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted.
+```
+
+it means ollama is already running, if you still can't able to access your ollama model, try to restart your system and run the ```ollama serve```  again.
 
 #### Cross-Device Access Setup
 
@@ -77,6 +97,61 @@ OLLAMA_HOST=0.0.0.0:11434 ollama serve  # Enables access from mobile devices
 1. Open the installed application.
 2. Connect to your local Ollama server.
 3. Start chatting with AI.
+
+<br/>
+<hr>
+<br/>
+
+
+### **Steps to Run the Application in Windows/Mac/Linux** 
+
+#### **1. Install Flutter (if not installed)**
+
+- Download and install Flutter: [Flutter Installation Guide](https://flutter.dev/docs/get-started/install)
+- Verify the installation:
+    
+    ```sh
+    flutter --version
+    ```
+    
+
+#### **2. Navigate to the Project Folder**
+
+```sh
+cd /mnt/data/OllamaTalk/OllamaTalk-0.1.0
+```
+
+#### **3. Install Dependencies**
+
+```sh
+flutter pub get
+```
+
+#### **4. Run the Application**
+
+
+- **For iOS (Mac only):**
+    
+    ```sh
+    flutter run
+    ```
+    
+    _(Requires Xcode installed.)_
+- **For Web:**
+    
+    ```sh
+    flutter run -d chrome
+    ```
+    
+- **For Windows/Linux/macOS Desktop:**
+    
+    ```sh
+    flutter run -d windows  # for Windows
+    flutter run -d linux    # for Linux
+    flutter run -d macos    # for macOS
+    ```
+
+
 
 > **Note:** Ensure that the Ollama server is running before launching the application.
 
