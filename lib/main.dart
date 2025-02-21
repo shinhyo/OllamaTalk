@@ -50,8 +50,9 @@ Future<void> _initWindowOption() async {
       WindowOptions(
         size: const Size(1024, 768),
         minimumSize: const Size(420, 400),
-        titleBarStyle:
-            Platform.isWindows ? TitleBarStyle.normal : TitleBarStyle.hidden,
+        titleBarStyle: Platform.isWindows || Platform.isLinux
+            ? TitleBarStyle.normal
+            : TitleBarStyle.hidden,
         backgroundColor: Colors.transparent,
         windowButtonVisibility: true,
         title: t.common.appName,
