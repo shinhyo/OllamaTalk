@@ -1,0 +1,209 @@
+name: Release Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build for ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          #          - platform: Android
+          #            os: ubuntu-latest
+          #            build_cmd: flutter build apk --release
+          #            artifact_path: build/app/outputs/flutter-apk/app-release.apk
+          - platform: Linux
+            os: ubuntu-latest
+            build_cmd: flutter build linux --release
+            artifact_path: build/linux/x64/release/bundle
+    #          - platform: macOS
+    #            os: macos-latest
+    #            build_cmd: flutter build macos --release
+    #            artifact_path: build/macos/Build/Products/Release/OllamaTalk.app
+    #          - platform: Windows
+    #            os: windows-latest
+    #            build_cmd: flutter build windows --release
+    #            artifact_path: build\windows\x64\runner\Release
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Install Linux dependencies
+        if: matrix.platform == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build libgtk-3-dev cmake clang pkg-config libblkid-dev liblzma-dev libsecret-1-dev libjsoncpp-dev libglu1-mesa xz-utils libgl1-mesa-dev xorg-dev dpkg-dev
+
+      - name: Install macOS dependencies
+        if: matrix.platform == 'macOS'
+        run: |
+          brew install cmake ninja pkg-config create-dmg
+
+      - name: Install Windows dependencies
+        if: matrix.platform == 'Windows'
+        run: |
+          choco install cmake ninja visualstudio2019buildtools visualstudio2019-workload-vctools innosetup
+
+      - name: Enable desktop
+        if: matrix.platform == 'Linux' || matrix.platform == 'macOS' || matrix.platform == 'Windows'
+        run: |
+          flutter config --enable-linux-desktop
+          flutter config --enable-macos-desktop
+          flutter config --enable-windows-desktop
+
+      - name: Install Dependencies
+        run: |
+          flutter pub get
+          dart run build_runner build -d -v
+
+      - name: Build for ${{ matrix.platform }}
+        run: ${{ matrix.build_cmd }}
+
+      - name: Archive Artifact for Android
+        if: matrix.platform == 'Android'
+        run: cp ${{ matrix.artifact_path }} OllamaTalk-Android.apk
+
+      - name: Archive Artifact for Linux
+        if: matrix.platform == 'Linux'
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+
+          mkdir -p packages/debian/DEBIAN
+          mkdir -p packages/debian/usr/bin
+          mkdir -p packages/debian/usr/share/applications
+          mkdir -p packages/debian/usr/share/ollama_talk
+
+          cat > packages/debian/DEBIAN/control << EOF
+          Package: ollama-talk
+          Version: ${VERSION}
+          Architecture: amd64
+          Priority: optional
+          Section: utils
+          Description: OllamaTalk Desktop Application
+           A desktop client for Ollama AI chat.
+          Depends: libgtk-3-0, libblkid1, liblzma5, libsecret-1-0, libjsoncpp25, libglib2.0-0
+          EOF
+
+          cp -r build/linux/x64/release/bundle/* packages/debian/usr/share/ollama_talk/
+          ln -s /usr/share/ollama_talk/ollama_talk packages/debian/usr/bin/ollama_talk
+
+          cat > packages/debian/usr/share/applications/ollama-talk.desktop << EOF
+          [Desktop Entry]
+          Name=OllamaTalk
+          Comment=OllamaTalk
+          Exec=/usr/bin/ollama_talk
+          Icon=/usr/share/ollama_talk/data/flutter_assets/assets/images/app_icon_light.png
+          Terminal=false
+          Type=Application
+          Categories=Utility;
+          EOF
+
+          dpkg-deb --build packages/debian OllamaTalk-Linux.deb
+
+      - name: Archive Artifact for macOS
+        if: matrix.platform == 'macOS'
+        run: |
+          mkdir -p dmg
+          cp -r ${{ matrix.artifact_path }} dmg/
+          create-dmg \
+            --volname "OllamaTalk" \
+            --window-pos 200 120 \
+            --window-size 800 400 \
+            --icon-size 100 \
+            --icon "OllamaTalk.app" 200 190 \
+            --hide-extension "OllamaTalk.app" \
+            --app-drop-link 600 185 \
+            "OllamaTalk-macOS.dmg" \
+            "dmg/"
+
+      - name: Create Inno Setup Script
+        if: matrix.platform == 'Windows'
+        run: |
+          $content = @"
+          [Setup]
+          AppName=OllamaTalk
+          AppVersion=1.0.0
+          WizardStyle=modern
+          DefaultDirName={autopf}\OllamaTalk
+          DefaultGroupName=OllamaTalk
+          OutputDir=.
+          OutputBaseFilename=OllamaTalk-Windows
+          
+          [Files]
+          Source: "build\windows\x64\runner\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
+          
+          [Icons]
+          Name: "{group}\OllamaTalk"; Filename: "{app}\ollama_talk.exe"
+          Name: "{commondesktop}\OllamaTalk"; Filename: "{app}\ollama_talk.exe"
+          "@
+          Set-Content -Path "installer.iss" -Value $content
+        shell: pwsh
+
+      - name: Build Installer
+        if: matrix.platform == 'Windows'
+        run: |
+          & 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe' installer.iss
+        shell: pwsh
+
+      - name: Upload Artifact for Android
+        if: matrix.platform == 'Android'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android-artifact
+          path: OllamaTalk-Android.apk
+
+      - name: Upload Artifact for Linux
+        if: matrix.platform == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Linux-artifact
+          path: OllamaTalk-Linux.deb
+
+      - name: Upload Artifact for macOS
+        if: matrix.platform == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: macOS-artifact
+          path: OllamaTalk-macOS.dmg
+
+      - name: Upload Artifact for Windows
+        if: matrix.platform == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-artifact
+          path: OllamaTalk-Windows.exe
+
+#  release:
+#    name: Create GitHub Release and Upload Artifacts
+#    runs-on: ubuntu-latest
+#    needs: build
+#    steps:
+#      - name: Download Artifacts
+#        uses: actions/download-artifact@v4
+#        with:
+#          path: ./artifacts
+#
+#      - name: Create Release and Upload Artifacts
+#        uses: softprops/action-gh-release@v2
+#        with:
+#          name: Release ${{ github.ref_name }}
+#          files: |
+#            ./artifacts/Android-artifact/OllamaTalk-Android.apk
+#            ./artifacts/Linux-artifact/OllamaTalk-Linux.deb
+#            ./artifacts/macOS-artifact/OllamaTalk-macOS.dmg
+#            ./artifacts/Windows-artifact/OllamaTalk-Windows.exe
+#          draft: false
+#          prerelease: false
+#          generate_release_notes: true
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
