@@ -5,6 +5,10 @@ on:
     tags:
       - 'v*'
 
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
@@ -132,19 +136,39 @@ jobs:
           $content = @"
           [Setup]
           AppName=OllamaTalk
-          AppVersion=1.0.0
+          AppVersion=${{ github.ref_name }}
+          AppPublisher=OllamaTalk Team
+          AppPublisherURL=https://github.com/shinhyo/ollamatalk
+          AppSupportURL=https://github.com/shinhyo/ollamatalk/issues
+          AppUpdatesURL=https://github.com/shinhyo/ollamatalk/releases
           WizardStyle=modern
           DefaultDirName={autopf}\OllamaTalk
           DefaultGroupName=OllamaTalk
           OutputDir=.
           OutputBaseFilename=OllamaTalk-Windows
+          Compression=lzma2/ultra64
+          SolidCompression=no
+          DisableStartupPrompt=yes
+          DisableProgramGroupPage=yes
+          UninstallDisplayIcon={app}\ollama_talk.exe
+          SetupIconFile=windows\runner\resources\app_icon.ico
+          PrivilegesRequired=lowest
+          
+          [Languages]
+          Name: "english"; MessagesFile: "compiler:Default.isl"
           
           [Files]
-          Source: "build\windows\x64\runner\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
+          Source: "build\windows\x64\runner\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
           
           [Icons]
           Name: "{group}\OllamaTalk"; Filename: "{app}\ollama_talk.exe"
-          Name: "{commondesktop}\OllamaTalk"; Filename: "{app}\ollama_talk.exe"
+          Name: "{commondesktop}\OllamaTalk"; Filename: "{app}\ollama_talk.exe"; Tasks: desktopicon
+          
+          [Tasks]
+          Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
+          
+          [Run]
+          Filename: "{app}\ollama_talk.exe"; Description: "{cm:LaunchProgram,OllamaTalk}"; Flags: nowait postinstall skipifsilent
           "@
           Set-Content -Path "installer.iss" -Value $content
         shell: pwsh
